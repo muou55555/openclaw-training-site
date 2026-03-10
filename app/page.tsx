@@ -1,6 +1,9 @@
+'use client';
+
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
+import { useLanguage } from '@/lib/language-context';
 import { 
   FileText, Brain, Sparkles, Target, Trophy, Rocket, Shield, 
   HelpCircle, Zap, Users, Clock, TrendingUp, CheckCircle, 
@@ -12,8 +15,62 @@ import {
   Lightbulb, Sparkles as Spark, ArrowUpRight, Play, BookOpen,
   Settings, Zap as Bolt, Sun, Download, Layout, Shield as ShieldIcon
 } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Home() {
+  const { lang } = useLanguage();
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  const content = {
+    hero: {
+      title: lang === 'zh' ? 'OpenClaw 培训' : 'OpenClaw Training',
+      subtitle: lang === 'zh' ? '从对话到行动的革命性 AI 工具' : 'A Revolutionary AI Tool from Conversation to Action',
+      badge: lang === 'zh' ? 'v1.0 稳定版' : 'v1.0 Stable'
+    },
+    intro: {
+      title: lang === 'zh' ? '开场引入' : 'Introduction',
+      challenges: {
+        title: lang === 'zh' ? '我们都面临什么挑战？' : 'What Challenges Do We Face?',
+        items: [
+          {
+            icon: AlertTriangle,
+            title: lang === 'zh' ? '信息过载' : 'Information Overload',
+            desc: lang === 'zh' ? '每天处理数百封邮件、消息、通知' : 'Handling hundreds of emails, messages, notifications daily'
+          },
+          {
+            icon: RefreshCw,
+            title: lang === 'zh' ? '重复性工作' : 'Repetitive Work',
+            desc: lang === 'zh' ? '填写表格、整理文件、回复格式化邮件' : 'Filling forms, organizing files, replying to formatted emails'
+          },
+          {
+            icon: Clock,
+            title: lang === 'zh' ? '时间精力有限' : 'Limited Time & Energy',
+            desc: lang === 'zh' ? '想做的事太多，能做的事太少' : 'Too much to do, too little time'
+          },
+          {
+            icon: TrendingUp,
+            title: lang === 'zh' ? '创新成本高' : 'High Innovation Cost',
+            desc: lang === 'zh' ? '从想法到实现需要数月甚至数年' : 'From idea to implementation takes months or years'
+          },
+          {
+            icon: Users,
+            title: lang === 'zh' ? '协作复杂' : 'Complex Collaboration',
+            desc: lang === 'zh' ? '跨部门沟通协调困难' : 'Difficult cross-departmental communication and coordination'
+          },
+          {
+            icon: Rocket,
+            title: lang === 'zh' ? '创业门槛高' : 'High Startup Barriers',
+            desc: lang === 'zh' ? '资金、人才、市场、技术多重挑战' : 'Multiple challenges: funding, talent, market, technology'
+          }
+        ]
+      },
+      whatIs: {
+        title: lang === 'zh' ? 'OpenClaw 是什么？' : 'What is OpenClaw?',
+        desc: lang === 'zh' ? 'OpenClaw 是一个革命性的 AI 工具，它就像给你的工作软件配了一个"数字团队"。这个团队由多个专业能力各异的智能体组成，每个成员都擅长不同的工作领域。' : 'OpenClaw is a revolutionary AI tool that acts like a "digital team" for your work software. This team consists of multiple intelligent agents with different expertise, each excelling in different work areas.'
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -24,10 +81,61 @@ export default function Home() {
             {/* Hero Section */}
             <section className="mb-16 text-center py-12">
               <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                OpenClaw 培训
+                {content.hero.title}
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-                从对话到行动的革命性 AI 工具
+                {content.hero.subtitle}
+              </p>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                {content.hero.badge}
+              </div>
+            </section>
+
+            {/* 开场引入 */}
+            <section id="intro" className="mb-16 scroll-mt-20">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <FileText className="w-6 h-6 text-primary" />
+                </div>
+                <h2 className="text-3xl font-bold">{content.intro.title}</h2>
+              </div>
+
+              <div className="prose prose-base dark:prose-invert max-w-none">
+                <div className="bg-muted/50 rounded-xl p-6 mb-6">
+                  <h3 className="text-xl font-semibold mb-4">{content.intro.challenges.title}</h3>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {content.intro.challenges.items.map((item, index) => {
+                      const Icon = item.icon;
+                      return (
+                        <div key={index} className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                            <Icon className="w-4 h-4 text-red-500" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm">{item.title}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{item.desc}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-primary/5 to-primary/10 border-l-4 border-primary p-6 rounded-r-xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" />
+                  <div className="relative">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Sparkles className="w-5 h-5 text-primary" />
+                      <p className="text-lg font-medium">{content.intro.whatIs.title}</p>
+                    </div>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      {content.intro.whatIs.desc}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
               </p>
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
                 <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
@@ -855,7 +963,10 @@ export default function Home() {
             </section>
           </div>
 
-          <Sidebar />
+          <Sidebar 
+            isOpen={mobileSidebarOpen} 
+            onClose={() => setMobileSidebarOpen(false)} 
+          />
         </div>
       </main>
 
