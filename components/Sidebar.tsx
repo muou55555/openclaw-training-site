@@ -1,0 +1,65 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { FileText, Brain, Sparkles, Target, Trophy, Rocket, Shield, HelpCircle } from 'lucide-react';
+
+const sections = [
+  { id: 'intro', label: '开场引入', labelEn: 'Introduction', icon: FileText },
+  { id: 'concept', label: '核心概念', labelEn: 'Core Concepts', icon: Brain },
+  { id: 'value', label: '核心价值', labelEn: 'Core Value', icon: Sparkles },
+  { id: 'scenarios', label: '应用场景', labelEn: 'Use Cases', icon: Target },
+  { id: 'cases', label: '成功案例', labelEn: 'Success Stories', icon: Trophy },
+  { id: 'getting-started', label: '如何开始', labelEn: 'Getting Started', icon: Rocket },
+  { id: 'security', label: '安全建议', labelEn: 'Security', icon: Shield },
+  { id: 'faq', label: 'Q&A', labelEn: 'Q&A', icon: HelpCircle },
+];
+
+export default function Sidebar() {
+  const [activeSection, setActiveSection] = useState('intro');
+  const [lang, setLang] = useState('zh');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    sections.forEach((section) => {
+      const element = document.getElementById(section.id);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <aside className="hidden lg:block w-56 shrink-0 sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+      <nav className="space-y-1">
+        {sections.map((section) => {
+          const Icon = section.icon;
+          return (
+            <Link
+              key={section.id}
+              href={`#${section.id}`}
+              className={`flex items-center gap-2 px-3 py-1.5 text-xs rounded-md transition-colors ${
+                activeSection === section.id
+                  ? 'bg-accent text-accent-foreground font-medium'
+                  : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">{lang === 'zh' ? section.label : section.labelEn}</span>
+            </Link>
+          );
+        })}
+      </nav>
+    </aside>
+  );
+}
