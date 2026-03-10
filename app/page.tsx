@@ -136,12 +136,6 @@ export default function Home() {
                 </div>
               </div>
             </section>
-              </p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                v1.0 稳定版
-              </div>
-            </section>
 
             {/* 开场引入 */}
             <section id="intro" className="mb-16 scroll-mt-20">
